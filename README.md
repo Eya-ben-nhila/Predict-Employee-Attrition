@@ -1,11 +1,10 @@
 # Employee Attrition Prediction System
 
-<<<<<<< HEAD
-A comprehensive machine learning system that predicts employee attrition using advanced feature engineering, multiple model comparison, and detailed feature importance analysis to help HR understand key drivers of attrition.
+A comprehensive machine learning system that predicts employee attrition using advanced feature engineering, multiple model comparison, and detailed feature importance analysis with proper handling of imbalanced datasets.
 
 ## Overview
 
-This system provides a complete ML pipeline for employee attrition prediction, including data exploration, feature engineering, model training, evaluation, and deployment. It uses the IBM HR Analytics Attrition Dataset to build binary classification models that identify employees at risk of leaving the company.
+This system provides a complete ML pipeline for employee attrition prediction, including data exploration, feature engineering, model training, evaluation, and deployment. It uses the IBM HR Analytics Attrition Dataset to build binary classification models that identify employees at risk of leaving the company, with special attention to handling the imbalanced nature of attrition data.
 
 ## Key Features
 
@@ -13,8 +12,14 @@ This system provides a complete ML pipeline for employee attrition prediction, i
 - **Data Exploration**: Comprehensive EDA with visualizations
 - **Feature Engineering**: 15+ engineered features including tenure metrics, satisfaction scores, and risk indicators
 - **Model Comparison**: Random Forest, Gradient Boosting, and Logistic Regression
-- **Cross-Validation**: Robust model evaluation with 5-fold CV
+- **Cross-Validation**: Robust model evaluation with 5-fold stratified CV
 - **Feature Importance Analysis**: Detailed analysis of key attrition drivers
+
+### Imbalanced Dataset Handling
+- **Multiple Balancing Methods**: SMOTE, ADASYN, SMOTETomek, SMOTEENN, Random Undersampling
+- **Class Weight Handling**: Automatic class weight calculation for imbalanced data
+- **Method Comparison**: Automated comparison of different balancing techniques
+- **Advanced Metrics**: Precision-Recall curves, Average Precision, F1-score
 
 ### Advanced Features
 - **Experience Metrics**: TenurePerCompany, SalaryPerYear, AgeExperienceGap
@@ -26,38 +31,20 @@ This system provides a complete ML pipeline for employee attrition prediction, i
 ### Visualization & Analysis
 - Feature importance plots showing top 20 predictors
 - Confusion matrix and ROC curves
+- Precision-Recall curves for imbalanced evaluation
+- Balancing methods comparison charts
 - Data exploration visualizations
-- Business metrics (precision, recall, F1-score)
-=======
-A machine learning system that predicts employee attrition using a trained model with comprehensive feature engineering and interactive testing capabilities.
-
-## Overview
-
-This system uses a pre-trained machine learning model to predict whether employees are likely to leave the company based on various factors including demographics, job characteristics, satisfaction metrics, and work-life balance indicators.
-
-## Features
-
-- **Pre-trained Model**: Loads a trained model with 87% accuracy and ROC AUC of 0.9381
-- **Comprehensive Feature Engineering**: Creates 15+ engineered features including:
-  - Tenure-based metrics (TenurePerCompany, YearsWithoutPromotion)
-  - Financial indicators (SalaryPerYear, CompensationRatio)
-  - Satisfaction scores (WorkLifeScore, LowEngagement flag)
-  - Career progression indicators (CareerGrowth, PromotionFrequency)
-  - Risk flags (IsOverworked, HighPerformerStuck, JobHopperFlag)
-- **Interactive Testing**: Multiple testing options for model validation
-- **Real Dataset Integration**: Uses IBM HR Analytics Attrition Dataset from Kaggle
->>>>>>> 84d787cfe7cfca2eff5c6312b379c7b2a1f1a40d
 
 ## Requirements
 
 - Python 3.7+
-<<<<<<< HEAD
 - pandas>=1.3.0
 - numpy>=1.21.0
 - scikit-learn>=1.0.0
 - matplotlib>=3.5.0
 - seaborn>=0.11.0
 - kagglehub>=0.1.0
+- imbalanced-learn>=0.8.0
 
 ## Installation
 
@@ -69,47 +56,30 @@ pip install -r requirements.txt
 
 ### 1. Complete ML Pipeline (Recommended)
 
-Run the complete machine learning pipeline:
+Run the complete machine learning pipeline with imbalanced dataset handling:
 
 ```bash
-python employee_attrition_ml.py
+python employee_attrition_ml_fixed.py
 ```
 
 This will:
 - Load and explore the IBM HR Analytics dataset
+- Analyze and visualize class imbalance (typically 84:16 ratio)
 - Perform comprehensive feature engineering
-- Train and compare multiple models
+- Compare multiple balancing methods automatically
+- Train and compare multiple models with proper handling
 - Generate feature importance analysis
-- Create evaluation visualizations
+- Create evaluation visualizations including PR curves
 - Save the best model for deployment
 
 ### 2. Interactive Prediction System
 
 After training the model, use the interactive prediction system:
 
-=======
-- pandas
-- numpy
-- scikit-learn
-- pickle
-- kagglehub
-
-## Model Files Required
-
-The system expects these pickle files in the same directory:
-- `best_model.pkl` - Trained classification model
-- `scaler.pkl` - Feature scaler for preprocessing
-- `model_info.pkl` - Model metadata and feature names
-
-## Usage
-
-Run the main script:
->>>>>>> 84d787cfe7cfca2eff5c6312b379c7b2a1f1a40d
 ```bash
-python sub4.py
+python sub4_clean.py
 ```
 
-<<<<<<< HEAD
 Available testing options:
 1. Test random employee from dataset
 2. Test specific employee by ID
@@ -118,12 +88,48 @@ Available testing options:
 5. Test employees who stayed (low risk)
 6. Compare predictions vs actual for sample
 
+## Imbalanced Dataset Handling
+
+### The Challenge
+Employee attrition datasets are typically imbalanced:
+- **Attrition Rate**: ~16% (Yes) vs 84% (No)
+- **Imbalance Ratio**: ~5:1 (No:Yes)
+- **Business Impact**: False negatives (missing leavers) are more costly than false positives
+
+### Implemented Solutions
+
+#### 1. Data-Level Approaches
+- **SMOTE**: Synthetic Minority Over-sampling Technique
+- **ADASYN**: Adaptive Synthetic Sampling
+- **SMOTETomek**: SMOTE + Tomek link cleaning
+- **SMOTEENN**: SMOTE + Edited Nearest Neighbors
+- **Random Undersampling**: Reduce majority class
+
+#### 2. Algorithm-Level Approaches
+- **Class Weights**: Automatic weight calculation (inverse class frequency)
+- **Stratified Cross-Validation**: Maintains class distribution in folds
+
+#### 3. Evaluation Metrics
+- **ROC AUC**: Standard for imbalanced classification
+- **Precision-Recall AUC**: More informative for imbalanced data
+- **Average Precision**: Summary of PR curve
+- **F1-Score**: Balance between precision and recall
+- **Specificity**: True negative rate
+
+### Automatic Method Selection
+The system automatically:
+1. Tests all balancing methods
+2. Compares performance using ROC AUC
+3. Selects the best method
+4. Trains final model with optimal approach
+
 ## Model Performance
 
-The system automatically selects the best performing model based on ROC AUC score. Typical results:
+With proper imbalanced dataset handling:
 - **Accuracy**: 85-90%
 - **ROC AUC**: 0.90-0.95
-- **Cross-validation**: 5-fold CV with confidence intervals
+- **Average Precision**: 0.60-0.75
+- **Cross-validation**: 5-fold stratified CV with confidence intervals
 
 ## Feature Importance Analysis
 
@@ -154,7 +160,8 @@ The system creates 15+ engineered features that often outperform original featur
 ### Visualization Files
 - `feature_importance.png` - Top 20 feature importance plot
 - `confusion_matrix.png` - Model confusion matrix
-- `roc_curve.png` - ROC curve and AUC score
+- `roc_pr_curves.png` - ROC and Precision-Recall curves
+- `balancing_comparison.png` - Balancing methods comparison
 - `attrition_exploration.png` - Data exploration visualizations
 
 ## Business Insights
@@ -183,7 +190,7 @@ Uses the IBM HR Analytics Attrition Dataset from Kaggle:
 
 ## Model Comparison
 
-The system evaluates three algorithms:
+The system evaluates three algorithms with proper imbalanced handling:
 1. **Random Forest**: Best for feature importance interpretation
 2. **Gradient Boosting**: Often highest predictive accuracy
 3. **Logistic Regression**: Good baseline with interpretable coefficients
@@ -211,52 +218,14 @@ The system evaluates three algorithms:
 
 ### Model Evaluation
 - **Stratified Train/Test Split**: Maintains attrition rate balance
-- **5-Fold Cross-Validation**: Robust performance estimation
-- **Multiple Metrics**: Accuracy, ROC AUC, Precision, Recall, F1
+- **5-Fold Stratified Cross-Validation**: Robust performance estimation
+- **Multiple Metrics**: Accuracy, ROC AUC, Precision, Recall, F1, Average Precision
 - **Business Metrics**: False positive/negative rates for cost analysis
-=======
-The system will present 6 testing options:
 
-1. **Test random employee** - Tests a randomly selected employee
-2. **Test specific employee by ID** - Tests an employee at a specific index
-3. **Test multiple random employees** - Tests multiple random employees with accuracy summary
-4. **Test employees who left** - Tests high-risk cases (actual leavers)
-5. **Test employees who stayed** - Tests low-risk cases (actual stayers)
-6. **Compare predictions vs actual** - Detailed comparison table with metrics
-
-## Model Performance
-
-- Accuracy: 87%
-- ROC AUC: 0.9381
-- Features: 50+ engineered and original features
-- Dataset: IBM HR Analytics (1,470 employees)
-
-## Feature Engineering
-
-The system creates sophisticated features including:
-
-**Experience & Tenure:**
-- TenurePerCompany: Total working years divided by companies worked
-- YearsWithoutPromotion: Time since last promotion
-- SalaryPerYear: Monthly income relative to experience
-
-**Satisfaction & Engagement:**
-- WorkLifeScore: Combined satisfaction metrics
-- LowEngagement: Flag for low job involvement or environment satisfaction
-- TrainingEngagement: Training frequency multiplied by job involvement
-
-**Risk Indicators:**
-- IsOverworked: Overtime workers with poor work-life balance
-- HighPerformerStuck: Good performers without recent promotions
-- JobHopperFlag: Employees with 4+ previous companies
-- LongDistanceCommute: Employees commuting 20+ miles
-
-**Career Progression:**
-- CareerGrowth: Years at company relative to promotion timing
-- PromotionFrequency: How often promotions occur
-- JobLevelMismatch: Experienced employees in junior roles
-
-## Data Source
-
-Uses the IBM HR Analytics Attrition Dataset available on Kaggle, containing 1,470 employee records with 35 features including demographics, job details, satisfaction scores, and attrition status.
->>>>>>> 84d787cfe7cfca2eff5c6312b379c7b2a1f1a40d
+### Imbalanced Handling Workflow
+1. **Detect Imbalance**: Calculate class distribution and ratio
+2. **Calculate Weights**: Automatic class weight computation
+3. **Test Methods**: Compare multiple balancing approaches
+4. **Select Best**: Choose optimal method based on ROC AUC
+5. **Train Final**: Train model with selected approach
+6. **Evaluate**: Comprehensive evaluation with appropriate metrics
